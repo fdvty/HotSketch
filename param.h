@@ -23,12 +23,12 @@ using namespace std;
 
 #define CELL_PER_BUCKET 16
 
+
 struct Bucket{
 public:
     uint32_t keys[CELL_PER_BUCKET];
     uint32_t freq[CELL_PER_BUCKET];
-    double timestamps[CELL_PER_BUCKET];
-    uint32_t negvotes;
+    double   timestamps[CELL_PER_BUCKET];
 };
 
 

@@ -12,14 +12,25 @@ void test_hotsketch(int hotsize, int hot_threshold, int time_threshold){
     
     timespec time1, time2;
     uint64_t resns = 0;
-    clock_gettime(CLOCK_MONOTONIC, &time1);
-    int key_num = vec.size();
-    for(int i = 0; i < key_num; ++i)
-        hotsketch.insert(vec[i].first, vec[i].second);
-    clock_gettime(CLOCK_MONOTONIC, &time2);
-    resns += (long long)(time2.tv_sec - time1.tv_sec) * 1000000000LL + (time2.tv_nsec - time1.tv_nsec);
-    double insertionMops = (double)1000.0 * (key_num) / resns;
-    printf("# Key: %d, Insertion Mops: %lf\n", key_num, insertionMops); 
+    clock_gettime(CLOCK_MONOTONIC, &time1);                                                             
+    int key_num = vec.size();                                                                           
+    for(int i = 0; i < key_num; ++i)                                                                    
+        hotsketch.insert(vec[i].first, vec[i].second);                                                  
+    clock_gettime(CLOCK_MONOTONIC, &time2);                                                             
+    resns = (long long)(time2.tv_sec - time1.tv_sec) * 1000000000LL + (time2.tv_nsec - time1.tv_nsec); 
+    double insertionMops = (double)1000.0 * (key_num) / resns;                                          
+    printf("# Key: %d, Insertion Mops: %lf\n", key_num, insertionMops);                                 
+
+
+    uint32_t ans = 0;
+    clock_gettime(CLOCK_MONOTONIC, &time1);                                                             
+    for(int i = 0; i < key_num; ++i)                                                                    
+        ans += hotsketch.query(vec[i].first, vec[i].second);                                                  
+    clock_gettime(CLOCK_MONOTONIC, &time2);                                                             
+    resns = (long long)(time2.tv_sec - time1.tv_sec) * 1000000000LL + (time2.tv_nsec - time1.tv_nsec); 
+    double queryMops = (double)1000.0 * (key_num) / resns;                                          
+    printf("# Key: %d, Query Mops: %lf\n", key_num, queryMops);                                 
+    printf("ans: %d (print to avoid O3)\n", ans);
 
     uint32_t value = 0, all = 0, hit = 0, size = 0;
     double aae = 0, are = 0, cr = 0, pr = 0;
@@ -58,7 +69,7 @@ void test_hotsketch(int hotsize, int hot_threshold, int time_threshold){
 
 int main(){
     // loadCAIDA18(vec, mp, "/Users/liuzirui/caida/130000.dat", 1, 10000000);
-    loadCAIDA18(vec, mp, "/Users/liuzirui/caida/130000.dat", 1, 1000, 6000000);
+    loadCAIDA18(vec, mp, "/share/datasets/CAIDA2018/dataset/130000.dat", 1, 1000, 6000000);
     test_hotsketch(2000, 1000, 1);
     return 0;
 }
