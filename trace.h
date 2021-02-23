@@ -23,7 +23,7 @@ void loadCAIDA18(vector<pair<uint32_t, double> > &vec, map<uint32_t, uint32_t> &
     uint32_t tkey; 
     double ttime; 
     while(fread(trace, 1, 21, pf)){
-        tkey = *(uint32_t*) (trace+5); 
+        tkey = *(uint32_t*) (trace); 
         ttime = *(double*) (trace+13); 
         vec.push_back(pair<uint32_t, double>(tkey, ttime)); 
         idset.insert(tkey);
